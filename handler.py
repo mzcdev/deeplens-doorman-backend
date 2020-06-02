@@ -98,15 +98,15 @@ def has_thermal(key):
     key = "meta/{}.json".format(img[0])
 
     try:
-        content_object = s3.Object(STORAGE_NAME, key)
-        file_content = content_object.get()["Body"].read().decode("utf-8")
-        json_content = json.loads(file_content)
+        o = s3.Object(STORAGE_NAME, key)
+        f = o.get()["Body"].read().decode("utf-8")
+        j = json.loads(f)
 
-        return "o", "{} °C".format(json_content["temperature"])
+        return "o", "{} °C".format(j["temperature"]), j["uuid"]
     except Exception as ex:
         print("Error:", ex, key)
 
-    return "x", "-"
+    return "x", "-", "unknown"
 
 
 def make_rectangle(src_key, dst_key, box):
@@ -247,7 +247,7 @@ def create_faces(
     # ddb = boto3.resource("dynamodb", region_name=AWS_REGION)
     tbl = ddb.Table(TABLE_USERS)
 
-    thermal, temperature = has_thermal(image_key)
+    thermal, temperature, device_id = has_thermal(image_key)
 
     latest = int(round(time.time() * 1000))
 
@@ -262,6 +262,7 @@ def create_faces(
                 "image_type": image_type,
                 "thermal": thermal,
                 "temperature": temperature,
+                "device_id": device_id,
                 "latest": latest,
             }
         )
@@ -285,14 +286,14 @@ def put_faces(
     # ddb = boto3.resource("dynamodb", region_name=AWS_REGION)
     tbl = ddb.Table(TABLE_USERS)
 
-    thermal, temperature = has_thermal(image_key)
+    thermal, temperature, device_id = has_thermal(image_key)
 
     latest = int(round(time.time() * 1000))
 
     try:
         res = tbl.update_item(
             Key={"user_id": user_id},
-            UpdateExpression="set user_name = :user_name, real_name=:real_name, image_key=:image_key, image_url=:image_url, image_type=:image_type, thermal=:thermal, temperature=:temperature, latest=:latest",
+            UpdateExpression="set user_name = :user_name, real_name=:real_name, image_key=:image_key, image_url=:image_url, image_type=:image_type, thermal=:thermal, temperature=:temperature, device_id=:device_id, latest=:latest",
             ExpressionAttributeValues={
                 ":user_name": user_name,
                 ":real_name": real_name,
@@ -301,6 +302,7 @@ def put_faces(
                 ":image_type": image_type,
                 ":thermal": thermal,
                 ":temperature": temperature,
+                ":device_id": device_id,
                 ":latest": latest,
             },
             ReturnValues="UPDATED_NEW",
@@ -318,20 +320,21 @@ def put_faces_image(user_id, image_key, image_url, image_type="detected"):
     # ddb = boto3.resource("dynamodb", region_name=AWS_REGION)
     tbl = ddb.Table(TABLE_USERS)
 
-    thermal, temperature = has_thermal(image_key)
+    thermal, temperature, device_id = has_thermal(image_key)
 
     latest = int(round(time.time() * 1000))
 
     try:
         res = tbl.update_item(
             Key={"user_id": user_id},
-            UpdateExpression="set image_key=:image_key, image_url=:image_url, image_type=:image_type, thermal=:thermal, temperature=:temperature, latest=:latest",
+            UpdateExpression="set image_key=:image_key, image_url=:image_url, image_type=:image_type, thermal=:thermal, temperature=:temperature, device_id=:device_id, latest=:latest",
             ExpressionAttributeValues={
                 ":image_key": image_key,
                 ":image_url": image_url,
                 ":image_type": image_type,
                 ":thermal": thermal,
                 ":temperature": temperature,
+                ":device_id": device_id,
                 ":latest": latest,
             },
             ReturnValues="UPDATED_NEW",
@@ -351,7 +354,7 @@ def create_history(
     # ddb = boto3.resource("dynamodb", region_name=AWS_REGION)
     tbl = ddb.Table(TABLE_HISTORY)
 
-    thermal, temperature = has_thermal(image_key)
+    thermal, temperature, device_id = has_thermal(image_key)
 
     latest = int(round(time.time() * 1000))
 
@@ -363,6 +366,7 @@ def create_history(
                 "image_url": image_url,
                 "thermal": thermal,
                 "temperature": temperature,
+                "device_id": device_id,
                 "visited": latest,
                 "latest": latest,
             }
