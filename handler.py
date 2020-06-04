@@ -8,6 +8,7 @@ import uuid
 
 from urllib.parse import parse_qs
 
+from boto3.dynamodb.conditions import Attr
 from boto3.dynamodb.conditions import Key
 
 
@@ -245,7 +246,7 @@ def get_users():
     try:
         latest = int(round(time.time() * 1000)) - (30 * 60 * 1000)
 
-        res = tbl.query(KeyConditionExpression=Key("latest").gte(latest))
+        res = tbl.scan(FilterExpression=Attr("latest").gt(latest))
 
         # res = tbl.get_item(Key={"user_id": user_id})
     except Exception as ex:
@@ -262,11 +263,11 @@ def get_history(user_id):
     tbl = ddb.Table(TABLE_HISTORY)
 
     try:
-        latest = int(round(time.time() * 1000)) - (30 * 60 * 1000)
+        visited = int(round(time.time() * 1000)) - (30 * 60 * 1000)
 
         res = tbl.query(
             KeyConditionExpression=Key("user_id").eq(user_id)
-            & Key("latest").gte(latest)
+            & Key("visited").gte(visited)
         )
     except Exception as ex:
         print("Error:", ex, user_id)
