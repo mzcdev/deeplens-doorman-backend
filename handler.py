@@ -244,7 +244,7 @@ def get_users():
     tbl = ddb.Table(TABLE_USERS)
 
     try:
-        latest = int(round(time.time() * 1000)) - (30 * 60 * 1000)
+        latest = int(round(time.time() * 1000)) - (30 * 60 * 60 * 1000)
 
         res = tbl.scan(
             FilterExpression=Key("user_id").ne("") & Attr("latest").gt(latest)
@@ -266,7 +266,7 @@ def get_history(user_id):
     tbl = ddb.Table(TABLE_HISTORY)
 
     try:
-        visited = int(round(time.time() * 1000)) - (30 * 60 * 1000)
+        visited = int(round(time.time() * 1000)) - (30 * 60 * 60 * 1000)
 
         res = tbl.query(
             KeyConditionExpression=Key("user_id").eq(user_id)
