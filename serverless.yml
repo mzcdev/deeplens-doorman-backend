@@ -112,6 +112,8 @@ resources:
         GlobalSecondaryIndexes:
           - IndexName: users_index
             KeySchema:
+              - AttributeName: user_id
+                KeyType: HASH
               - AttributeName: latest
                 KeyType: RANGE
             Projection:
