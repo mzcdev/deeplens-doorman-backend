@@ -108,11 +108,13 @@ resources:
         AttributeDefinitions:
           - AttributeName: user_id
             AttributeType: S
-          # - AttributeName: visited
-          #   AttributeType: N
+          - AttributeName: visited
+            AttributeType: N
         KeySchema:
           - AttributeName: user_id
             KeyType: HASH
+          - AttributeName: visited
+            KeyType: RANGE
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
