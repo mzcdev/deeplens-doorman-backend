@@ -94,7 +94,7 @@ resources:
           - AttributeName: user_id
             AttributeType: S
         KeySchema:
-          - AttributeName: email
+          - AttributeName: user_id
             KeyType: HASH
         ProvisionedThroughput:
           ReadCapacityUnits: 1
