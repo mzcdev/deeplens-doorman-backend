@@ -251,9 +251,9 @@ def get_users():
         # )
 
         res = tbl.query(
-            KeyConditionExpression=Key("user_id").ne("") & Key("latest").gte(latest),
+            KeyConditionExpression=Key("user_id").gte("0") & Key("latest").gte(latest),
             ScanIndexForward=False,  # true = asc, false = desc
-            Limit=10,
+            Limit=5,
         )
     except Exception as ex:
         print("Error:", ex)
@@ -275,7 +275,7 @@ def get_history(user_id):
             KeyConditionExpression=Key("user_id").eq(user_id)
             & Key("visited").gte(visited),
             ScanIndexForward=False,  # true = asc, false = desc
-            Limit=10,
+            Limit=20,
         )
     except Exception as ex:
         print("Error:", ex, user_id)
@@ -687,7 +687,11 @@ def users(event, context):
     if len(users) > 0:
         history = get_history(users[0]["user_id"])
 
-    return {"statusCode": 200, "users": json.dumps(users), "history": json.dumps(history)}
+    return {
+        "statusCode": 200,
+        "users": json.dumps(users),
+        "history": json.dumps(history),
+    }
 
 
 def clean(event, context):
