@@ -114,6 +114,10 @@ resources:
             KeySchema:
               - AttributeName: latest
                 KeyType: RANGE
+            Projection:
+              NonKeyAttributes:
+                - user_id
+              ProjectionType: INCLUDE
     historyTable:
       Type: AWS::DynamoDB::Table
       Properties:
@@ -138,6 +142,8 @@ resources:
                 KeyType: HASH
               - AttributeName: visited
                 KeyType: RANGE
+            Projection:
+              ProjectionType: KEYS_ONLY
 
 plugins:
   - serverless-python-requirements
