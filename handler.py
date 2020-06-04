@@ -247,8 +247,8 @@ def get_users():
         latest = int(round(time.time() * 1000)) - (30 * 60 * 60 * 1000)
 
         res = tbl.scan(
-            IndexName="users_index", ScanIndexForward=False, Limit=5,
-        )  # true = asc, false = desc
+            # IndexName="users_index", Limit=5
+        )
 
         # res = tbl.query(
         #     KeyConditionExpression=Key("latest").gte(latest),
