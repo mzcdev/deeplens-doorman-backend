@@ -246,11 +246,15 @@ def get_users():
     try:
         latest = int(round(time.time() * 1000)) - (30 * 60 * 60 * 1000)
 
-        res = tbl.scan(
-            # FilterExpression=Key("user_id").ne("") & Attr("latest").gt(latest)
-        )
+        # res = tbl.scan(
+        #     # FilterExpression=Key("user_id").ne("") & Attr("latest").gt(latest)
+        # )
 
-        # res = tbl.get_item(Key={"user_id": user_id})
+        res = tbl.query(
+            KeyConditionExpression=Key("user_id").ne("") & Key("latest").gte(latest),
+            ScanIndexForward=False,  # true = asc, false = desc
+            Limit=10,
+        )
     except Exception as ex:
         print("Error:", ex)
         res = []
@@ -269,7 +273,9 @@ def get_history(user_id):
 
         res = tbl.query(
             KeyConditionExpression=Key("user_id").eq(user_id)
-            & Key("visited").gte(visited)
+            & Key("visited").gte(visited),
+            ScanIndexForward=False,  # true = asc, false = desc
+            Limit=10,
         )
     except Exception as ex:
         print("Error:", ex, user_id)
