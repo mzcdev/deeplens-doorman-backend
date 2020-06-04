@@ -683,6 +683,11 @@ def train(event, context):
 
 
 def users(event, context):
+    # print(event['body'])
+    data = parse_qs(event["body"])
+    # data = json.loads(data["payload"][0])
+    print(data)
+
     users = get_users()
     history = []
 
