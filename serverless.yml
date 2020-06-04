@@ -68,8 +68,14 @@ functions:
     handler: handler.train
     events:
       - http:
-          path: faces/train
+          path: train
           method: post
+  users:
+    handler: handler.users
+    events:
+      - http:
+          path: users
+          method: get
   clean:
     handler: handler.clean
     events:

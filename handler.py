@@ -8,6 +8,8 @@ import uuid
 
 from urllib.parse import parse_qs
 
+from boto3.dynamodb.conditions import Key
+
 
 AWS_REGION = os.environ.get("AWSREGION", "ap-northeast-1")
 SLACK_API_TOKEN = os.environ.get("SLACK_API_TOKEN", "")
@@ -234,6 +236,45 @@ def get_faces(user_id):
     print("get_faces", res)
 
     return res
+
+
+def get_users():
+    # ddb = boto3.resource("dynamodb", region_name=AWS_REGION)
+    tbl = ddb.Table(TABLE_USERS)
+
+    try:
+        latest = int(round(time.time() * 1000)) - (30 * 60 * 1000)
+
+        res = tbl.query(KeyConditionExpression=Key("latest").gte(latest))
+
+        # res = tbl.get_item(Key={"user_id": user_id})
+    except Exception as ex:
+        print("Error:", ex)
+        res = []
+
+    print("get_users", res)
+
+    return res["Items"]
+
+
+def get_history(user_id):
+    # ddb = boto3.resource("dynamodb", region_name=AWS_REGION)
+    tbl = ddb.Table(TABLE_HISTORY)
+
+    try:
+        latest = int(round(time.time() * 1000)) - (30 * 60 * 1000)
+
+        res = tbl.query(
+            KeyConditionExpression=Key("user_id").eq(user_id)
+            & Key("latest").gte(latest)
+        )
+    except Exception as ex:
+        print("Error:", ex, user_id)
+        res = []
+
+    print("get_history", res)
+
+    return res["Items"]
 
 
 def create_faces(
@@ -628,6 +669,21 @@ def train(event, context):
         send_message(text, new_key)
 
     return {"statusCode": 200}
+
+
+def users(event, context):
+    # print(event['body'])
+    data = parse_qs(event["body"])
+    data = json.loads(data["payload"][0])
+    print(data)
+
+    users = get_users()
+    history = []
+
+    if len(users) > 0:
+        history = get_history(users[0]["user_id"])
+
+    return {"statusCode": 200, "users": users, "history": history}
 
 
 def clean(event, context):
