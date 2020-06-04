@@ -93,6 +93,8 @@ resources:
         AttributeDefinitions:
           - AttributeName: user_id
             AttributeType: S
+          - AttributeName: latest
+            AttributeType: N
         KeySchema:
           - AttributeName: user_id
             KeyType: HASH
@@ -106,6 +108,8 @@ resources:
         AttributeDefinitions:
           - AttributeName: user_id
             AttributeType: S
+          - AttributeName: visited
+            AttributeType: N
         KeySchema:
           - AttributeName: user_id
             KeyType: HASH
