@@ -118,6 +118,9 @@ resources:
               NonKeyAttributes:
                 - user_id
               ProjectionType: INCLUDE
+            ProvisionedThroughput:
+              ReadCapacityUnits: 1
+              WriteCapacityUnits: 1
     historyTable:
       Type: AWS::DynamoDB::Table
       Properties:
@@ -144,6 +147,9 @@ resources:
                 KeyType: RANGE
             Projection:
               ProjectionType: KEYS_ONLY
+            ProvisionedThroughput:
+              ReadCapacityUnits: 1
+              WriteCapacityUnits: 1
 
 plugins:
   - serverless-python-requirements
