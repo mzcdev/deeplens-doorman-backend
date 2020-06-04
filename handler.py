@@ -246,12 +246,10 @@ def get_users():
     try:
         latest = int(round(time.time() * 1000)) - (30 * 60 * 60 * 1000)
 
-        # res = tbl.scan(
-        #     # FilterExpression=Key("user_id").ne("") & Attr("latest").gt(latest)
-        # )
+        # res = tbl.scan()
 
         res = tbl.query(
-            KeyConditionExpression=Key("user_id").gte("0") & Key("latest").gte(latest),
+            KeyConditionExpression=Key("latest").gte(latest),
             ScanIndexForward=False,  # true = asc, false = desc
             Limit=5,
         )
