@@ -687,7 +687,7 @@ def users(event, context):
     if len(users) > 0:
         history = get_history(users[0]["user_id"])
 
-    return {"statusCode": 200, "users": users, "history": history}
+    return {"statusCode": 200, "users": json.dumps(users), "history": json.dumps(history)}
 
 
 def clean(event, context):
