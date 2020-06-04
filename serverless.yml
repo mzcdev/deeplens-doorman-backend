@@ -99,16 +99,21 @@ resources:
         AttributeDefinitions:
           - AttributeName: user_id
             AttributeType: S
-          # - AttributeName: latest
-          #   AttributeType: N
+          - AttributeName: latest
+            AttributeType: N
         KeySchema:
           - AttributeName: user_id
             KeyType: HASH
-          # - AttributeName: latest
-          #   KeyType: RANGE
+          - AttributeName: latest
+            KeyType: RANGE
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
+        GlobalSecondaryIndexes:
+          - IndexName: users_index
+            KeySchema:
+              - AttributeName: latest
+                KeyType: RANGE
     historyTable:
       Type: AWS::DynamoDB::Table
       Properties:
@@ -126,6 +131,13 @@ resources:
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
+        GlobalSecondaryIndexes:
+          - IndexName: history_index
+            KeySchema:
+              - AttributeName: user_id
+                KeyType: HASH
+              - AttributeName: visited
+                KeyType: RANGE
 
 plugins:
   - serverless-python-requirements
