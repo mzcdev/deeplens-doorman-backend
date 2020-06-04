@@ -1,10 +1,12 @@
 import boto3
 import cv2
-import json
 import os
 import requests
 import time
 import uuid
+
+# import json
+import simplejson as json
 
 from urllib.parse import parse_qs
 
