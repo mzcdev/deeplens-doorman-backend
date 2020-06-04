@@ -691,8 +691,8 @@ def users(event, context):
 
     return {
         "statusCode": 200,
-        "users": json.dumps(users),
-        "history": json.dumps(history),
+        "users": json.dumps(users, use_decimal=True),
+        "history": json.dumps(history, use_decimal=True),
     }
 
 
