@@ -247,9 +247,8 @@ def get_users():
         latest = int(round(time.time() * 1000)) - (30 * 60 * 60 * 1000)
 
         res = tbl.scan(
-            FilterExpression=Key("user_id").ne("") & Attr("latest").gt(latest)
+            # FilterExpression=Key("user_id").ne("") & Attr("latest").gt(latest)
         )
-        # res = tbl.scan()
 
         # res = tbl.get_item(Key={"user_id": user_id})
     except Exception as ex:
