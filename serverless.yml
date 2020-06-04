@@ -75,17 +75,43 @@ functions:
     events:
       - schedule: cron(0 20 * * ? *)
 
-# resources:
-#   Resources:
-#     S3Bucket:
-#       Type: AWS::S3::Bucket
-#       Properties:
-#         BucketName: ${env:STORAGE_NAME}
-#         LifecycleConfiguration:
-#           Rules:
-#             - ExpirationInDays: 3
-#               Prefix: "/"
-#               Status: Enabled
+resources:
+  Resources:
+    # S3Bucket:
+    #   Type: AWS::S3::Bucket
+    #   Properties:
+    #     BucketName: ${env:STORAGE_NAME}
+    #     LifecycleConfiguration:
+    #       Rules:
+    #         - ExpirationInDays: 3
+    #           Prefix: "/"
+    #           Status: Enabled
+    usersTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${env:TABLE_USERS}
+        AttributeDefinitions:
+          - AttributeName: user_id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: email
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+    historyTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${env:TABLE_HISTORY}
+        AttributeDefinitions:
+          - AttributeName: user_id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: email
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
 
 plugins:
   - serverless-python-requirements

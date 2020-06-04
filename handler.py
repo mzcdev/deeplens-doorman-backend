@@ -10,8 +10,8 @@ from urllib.parse import parse_qs
 
 
 AWS_REGION = os.environ.get("AWSREGION", "ap-northeast-1")
-SLACK_CHANNEL_ID = os.environ.get("SLACK_CHANNEL_ID", "")
 SLACK_API_TOKEN = os.environ.get("SLACK_API_TOKEN", "")
+SLACK_CHANNEL_ID = os.environ.get("SLACK_CHANNEL_ID", "")
 STORAGE_NAME = os.environ.get("STORAGE_NAME", "deeplens-doorman-demo")
 TABLE_USERS = os.environ.get("TABLE_USERS", "doorman-users-demo")
 TABLE_HISTORY = os.environ.get("TABLE_HISTORY", "doorman-history-demo")
