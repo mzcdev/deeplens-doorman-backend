@@ -701,13 +701,13 @@ def users(event, context):
         "statusCode": 200,
         # "users": users,
         # "history": history,
-        "users": json.dumps(users),
-        "history": json.dumps(history),
+        # "users": json.dumps(users),
+        # "history": json.dumps(history),
     }
 
     print("result", result)
 
-    return result
+    return json.dumps(result)
 
 
 def clean(event, context):
