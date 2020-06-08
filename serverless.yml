@@ -101,17 +101,17 @@ resources:
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
-        LocalSecondaryIndexes:
-          - IndexName: latest_index
-            KeySchema:
-              # - AttributeName: user_id
-              #   KeyType: HASH
-              - AttributeName: latest
-                KeyType: RANGE
-            Projection:
-              NonKeyAttributes:
-                - user_id
-              ProjectionType: INCLUDE
+        # LocalSecondaryIndexes:
+        #   - IndexName: latest_index
+        #     KeySchema:
+        #       # - AttributeName: user_id
+        #       #   KeyType: HASH
+        #       - AttributeName: latest
+        #         KeyType: RANGE
+        #     Projection:
+        #       NonKeyAttributes:
+        #         - user_id
+        #       ProjectionType: INCLUDE
         # GlobalSecondaryIndexes:
         #   - IndexName: users_index
         #     KeySchema:
