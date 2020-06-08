@@ -400,9 +400,7 @@ def put_faces_image(user_id, image_key, image_url, image_type="detected"):
     return res
 
 
-def create_history(
-    user_id, image_key, image_url,
-):
+def create_history(user_id, image_key, image_url):
     # ddb = boto3.resource("dynamodb", region_name=AWS_REGION)
     tbl = ddb.Table(TABLE_HISTORY)
 
