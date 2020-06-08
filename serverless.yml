@@ -16,24 +16,17 @@ provider:
 
   # you can add statements to the Lambda function's IAM Role here
   iamRoleStatements:
-    - Effect: "Allow"
+    - Effect: Allow
       Action:
         - "s3:*"
       Resource: "*"
-    - Effect: "Allow"
+    - Effect: Allow
       Action:
-        - "rekognition:DetectFaces"
-        - "rekognition:SearchFacesByImage"
-        - "rekognition:IndexFaces"
+        - "rekognition:*"
       Resource: "*"
     - Effect: Allow
       Action:
-        - dynamodb:Query
-        - dynamodb:Scan
-        - dynamodb:GetItem
-        - dynamodb:PutItem
-        - dynamodb:UpdateItem
-        - dynamodb:DeleteItem
+        - "dynamodb:*"
       Resource:
         - "arn:aws:dynamodb:${env:AWSREGION}:*:*"
 
