@@ -170,7 +170,7 @@ resources:
         #         - visited
         #       ProjectionType: INCLUDE
         GlobalSecondaryIndexes:
-          - IndexName: history_index
+          - IndexName: visited_index
             KeySchema:
               - AttributeName: user_id
                 KeyType: HASH
