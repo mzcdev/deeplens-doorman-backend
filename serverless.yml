@@ -81,77 +81,77 @@ functions:
     events:
       - schedule: cron(0 20 * * ? *)
 
-# resources:
-#   Resources:
-#     # S3Bucket:
-#     #   Type: AWS::S3::Bucket
-#     #   Properties:
-#     #     BucketName: ${env:STORAGE_NAME}
-#     #     LifecycleConfiguration:
-#     #       Rules:
-#     #         - ExpirationInDays: 3
-#     #           Prefix: "/"
-#     #           Status: Enabled
-#     usersTable:
-#       Type: AWS::DynamoDB::Table
-#       Properties:
-#         TableName: ${env:TABLE_USERS}
-#         AttributeDefinitions:
-#           - AttributeName: user_id
-#             AttributeType: S
-#           - AttributeName: latest
-#             AttributeType: N
-#         KeySchema:
-#           - AttributeName: user_id
-#             KeyType: HASH
-#           - AttributeName: latest
-#             KeyType: RANGE
-#         ProvisionedThroughput:
-#           ReadCapacityUnits: 1
-#           WriteCapacityUnits: 1
-#         GlobalSecondaryIndexes:
-#           - IndexName: users_index
-#             KeySchema:
-#               - AttributeName: user_id
-#                 KeyType: HASH
-#               - AttributeName: latest
-#                 KeyType: RANGE
-#             Projection:
-#               NonKeyAttributes:
-#                 - user_id
-#               ProjectionType: INCLUDE
-#             ProvisionedThroughput:
-#               ReadCapacityUnits: 1
-#               WriteCapacityUnits: 1
-#     historyTable:
-#       Type: AWS::DynamoDB::Table
-#       Properties:
-#         TableName: ${env:TABLE_HISTORY}
-#         AttributeDefinitions:
-#           - AttributeName: user_id
-#             AttributeType: S
-#           - AttributeName: visited
-#             AttributeType: N
-#         KeySchema:
-#           - AttributeName: user_id
-#             KeyType: HASH
-#           - AttributeName: visited
-#             KeyType: RANGE
-#         ProvisionedThroughput:
-#           ReadCapacityUnits: 1
-#           WriteCapacityUnits: 1
-#         GlobalSecondaryIndexes:
-#           - IndexName: history_index
-#             KeySchema:
-#               - AttributeName: user_id
-#                 KeyType: HASH
-#               - AttributeName: visited
-#                 KeyType: RANGE
-#             Projection:
-#               ProjectionType: KEYS_ONLY
-#             ProvisionedThroughput:
-#               ReadCapacityUnits: 1
-#               WriteCapacityUnits: 1
+resources:
+  Resources:
+    # S3Bucket:
+    #   Type: AWS::S3::Bucket
+    #   Properties:
+    #     BucketName: ${env:STORAGE_NAME}
+    #     LifecycleConfiguration:
+    #       Rules:
+    #         - ExpirationInDays: 3
+    #           Prefix: "/"
+    #           Status: Enabled
+    usersTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${env:TABLE_USERS}
+        AttributeDefinitions:
+          - AttributeName: user_id
+            AttributeType: S
+          - AttributeName: latest
+            AttributeType: N
+        KeySchema:
+          - AttributeName: user_id
+            KeyType: HASH
+          - AttributeName: latest
+            KeyType: RANGE
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        # GlobalSecondaryIndexes:
+        #   - IndexName: users_index
+        #     KeySchema:
+        #       - AttributeName: user_id
+        #         KeyType: HASH
+        #       - AttributeName: latest
+        #         KeyType: RANGE
+        #     Projection:
+        #       NonKeyAttributes:
+        #         - user_id
+        #       ProjectionType: INCLUDE
+        #     ProvisionedThroughput:
+        #       ReadCapacityUnits: 1
+        #       WriteCapacityUnits: 1
+    historyTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${env:TABLE_HISTORY}
+        AttributeDefinitions:
+          - AttributeName: visited
+            AttributeType: N
+          - AttributeName: user_id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: visited
+            KeyType: HASH
+          - AttributeName: user_id
+            KeyType: RANGE
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        # GlobalSecondaryIndexes:
+        #   - IndexName: history_index
+        #     KeySchema:
+        #       - AttributeName: visited
+        #         KeyType: HASH
+        #       - AttributeName: user_id
+        #         KeyType: RANGE
+        #     Projection:
+        #       ProjectionType: KEYS_ONLY
+        #     ProvisionedThroughput:
+        #       ReadCapacityUnits: 1
+        #       WriteCapacityUnits: 1
 
 plugins:
   - serverless-python-requirements
