@@ -683,15 +683,15 @@ def train(event, context):
 
 def users(event, context):
     # print(event['body'])
-    data = parse_qs(event["body"])
+    # data = parse_qs(event["body"])
     # data = json.loads(data["payload"][0])
-    print(data)
+    # print(data)
 
     users = get_users()
     history = []
 
     if len(users) > 0:
-        print("users[0]", users[0])
+        print("users[0]", users[0]["user_id"])
 
         history = get_history(users[0]["user_id"])
 
