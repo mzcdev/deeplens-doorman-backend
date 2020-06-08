@@ -119,6 +119,7 @@ resources:
             Projection:
               NonKeyAttributes:
                 - user_id
+                - latest
               ProjectionType: INCLUDE
         # GlobalSecondaryIndexes:
         #   - IndexName: users_index
