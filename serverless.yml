@@ -165,18 +165,21 @@ resources:
         #         - user_id
         #         - visited
         #       ProjectionType: INCLUDE
-        # GlobalSecondaryIndexes:
-        #   - IndexName: history_index
-        #     KeySchema:
-        #       - AttributeName: user_id
-        #         KeyType: HASH
-        #       - AttributeName: visited
-        #         KeyType: RANGE
-        #     Projection:
-        #       ProjectionType: KEYS_ONLY
-        #     ProvisionedThroughput:
-        #       ReadCapacityUnits: 5
-        #       WriteCapacityUnits: 5
+        GlobalSecondaryIndexes:
+          - IndexName: history_index
+            KeySchema:
+              - AttributeName: user_id
+                KeyType: HASH
+              - AttributeName: visited
+                KeyType: RANGE
+            Projection:
+              NonKeyAttributes:
+                - user_id
+                - visited
+              ProjectionType: INCLUDE
+            ProvisionedThroughput:
+              ReadCapacityUnits: 5
+              WriteCapacityUnits: 5
 
 plugins:
   - serverless-python-requirements
