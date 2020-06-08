@@ -76,8 +76,7 @@ functions:
       - http:
           path: users
           method: GET
-          cors:
-            origin: "*"
+          cors: true
   clean:
     handler: handler.clean
     events:
