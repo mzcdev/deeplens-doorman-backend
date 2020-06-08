@@ -104,11 +104,22 @@ resources:
         KeySchema:
           - AttributeName: user_id
             KeyType: HASH
-          - AttributeName: latest
-            KeyType: RANGE
+          # - AttributeName: latest
+          #   KeyType: RANGE
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
+        LocalSecondaryIndexes:
+          - IndexName: latest_index
+            KeySchema:
+              # - AttributeName: user_id
+              #   KeyType: HASH
+              - AttributeName: latest
+                KeyType: RANGE
+            Projection:
+              NonKeyAttributes:
+                - user_id
+              ProjectionType: INCLUDE
         # GlobalSecondaryIndexes:
         #   - IndexName: users_index
         #     KeySchema:
@@ -128,24 +139,35 @@ resources:
       Properties:
         TableName: ${env:TABLE_HISTORY}
         AttributeDefinitions:
-          - AttributeName: visited
-            AttributeType: N
           - AttributeName: user_id
             AttributeType: S
-        KeySchema:
           - AttributeName: visited
-            KeyType: HASH
+            AttributeType: N
+        KeySchema:
           - AttributeName: user_id
+            KeyType: HASH
+          - AttributeName: visited
             KeyType: RANGE
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
+        # LocalSecondaryIndexes:
+        #   - IndexName: myLSI
+        #     KeySchema:
+        #       - AttributeName: user_id
+        #         KeyType: HASH
+        #       - AttributeName: visited
+        #         KeyType: RANGE
+        #     Projection:
+        #       NonKeyAttributes:
+        #         - Artist
+        #       ProjectionType: INCLUDE
         # GlobalSecondaryIndexes:
         #   - IndexName: history_index
         #     KeySchema:
-        #       - AttributeName: visited
-        #         KeyType: HASH
         #       - AttributeName: user_id
+        #         KeyType: HASH
+        #       - AttributeName: visited
         #         KeyType: RANGE
         #     Projection:
         #       ProjectionType: KEYS_ONLY
