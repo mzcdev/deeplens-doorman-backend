@@ -697,15 +697,11 @@ def users(event, context):
 
         history = get_history(users[0]["user_id"])
 
-    result = json.dumps(
-        {
-            "statusCode": 200,
-            "users": users,
-            "history": history,
-            # "users": json.dumps(users),
-            # "history": json.dumps(history),
-        }
-    )
+    result = {
+        "statusCode": 200,
+        "headers": {"Content-Type": "application/json"},
+        "body": {"statusCode": 200, "users": users, "history": history,},
+    }
 
     print("result", result)
 
