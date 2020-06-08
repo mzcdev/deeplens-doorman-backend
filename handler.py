@@ -248,15 +248,16 @@ def get_users():
     try:
         latest = int(round(time.time() * 1000)) - (30 * 60 * 60 * 1000)
 
-        res = tbl.scan(
-            # IndexName="users_index", Limit=5
-        )
-
-        # res = tbl.query(
-        #     KeyConditionExpression=Key("latest").gte(latest),
-        #     ScanIndexForward=False,  # true = asc, false = desc
-        #     Limit=5,
+        # res = tbl.scan(
+        #     # IndexName="users_index", Limit=5
         # )
+
+        res = tbl.query(
+            KeyConditionExpression=Key("latest").gte(latest),
+            IndexName="users_index",
+            ScanIndexForward=False,  # true = asc, false = desc
+            Limit=5,
+        )
     except Exception as ex:
         print("Error get_users:", ex)
         res = []
