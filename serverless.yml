@@ -124,7 +124,7 @@ resources:
         #         - latest
         #       ProjectionType: INCLUDE
         GlobalSecondaryIndexes:
-          - IndexName: users_index
+          - IndexName: latest_index
             KeySchema:
               - AttributeName: image_type
                 KeyType: HASH
