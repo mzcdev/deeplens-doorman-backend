@@ -700,7 +700,7 @@ def users(event, context):
     result = {
         "statusCode": 200,
         "headers": {"Content-Type": "application/json"},
-        "body": {"statusCode": 200, "users": users, "history": history,},
+        "body": json.dumps({"statusCode": 200, "users": users, "history": history}),
     }
 
     print("result", result)
