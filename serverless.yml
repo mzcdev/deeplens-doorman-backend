@@ -145,8 +145,6 @@ resources:
         AttributeDefinitions:
           - AttributeName: user_id
             AttributeType: S
-          - AttributeName: image_type
-            AttributeType: S
           - AttributeName: visited
             AttributeType: N
         KeySchema:
