@@ -690,6 +690,8 @@ def users(event, context):
     history = []
 
     if len(users) > 0:
+        print("users[0]", users[0])
+
         history = get_history(users[0]["user_id"])
 
     return {
