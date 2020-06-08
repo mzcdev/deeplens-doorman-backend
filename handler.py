@@ -257,7 +257,7 @@ def get_users():
             & Key("latest").gte(latest),
             IndexName="latest_index",
             ScanIndexForward=False,  # true = asc, false = desc
-            Limit=5,
+            Limit=1,
         )
     except Exception as ex:
         print("Error get_users:", ex)
