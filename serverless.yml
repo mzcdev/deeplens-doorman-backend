@@ -99,6 +99,8 @@ resources:
         AttributeDefinitions:
           - AttributeName: user_id
             AttributeType: S
+          - AttributeName: image_type
+            AttributeType: S
           - AttributeName: latest
             AttributeType: N
         KeySchema:
@@ -124,8 +126,8 @@ resources:
         GlobalSecondaryIndexes:
           - IndexName: users_index
             KeySchema:
-              # - AttributeName: user_id
-              #   KeyType: HASH
+              - AttributeName: image_type
+                KeyType: HASH
               - AttributeName: latest
                 KeyType: RANGE
             Projection:
@@ -142,6 +144,8 @@ resources:
         TableName: ${env:TABLE_HISTORY}
         AttributeDefinitions:
           - AttributeName: user_id
+            AttributeType: S
+          - AttributeName: image_type
             AttributeType: S
           - AttributeName: visited
             AttributeType: N
