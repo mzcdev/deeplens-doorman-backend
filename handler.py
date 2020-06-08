@@ -109,7 +109,7 @@ def has_thermal(key):
 
         return "o", "{} °C".format(j["temperature"]), j["uuid"]
     except Exception as ex:
-        print("Error:", ex, key)
+        print("Error has_thermal:", ex, key)
 
     return "x", "-", "unknown"
 
@@ -198,7 +198,7 @@ def search_faces(key):
             FaceMatchThreshold=90,
         )
     except Exception as ex:
-        print("Error:", ex, key)
+        print("Error search_faces:", ex, key)
         res = []
 
     print("search_faces", res)
@@ -218,7 +218,7 @@ def index_faces(key):
             # ExternalImageId=image_id,
         )
     except Exception as ex:
-        print("Error:", ex, key)
+        print("Error index_faces:", ex, key)
         res = []
 
     print("index_faces", res)
@@ -233,7 +233,7 @@ def get_faces(user_id):
     try:
         res = tbl.get_item(Key={"user_id": user_id})
     except Exception as ex:
-        print("Error:", ex, user_id)
+        print("Error get_faces:", ex, user_id)
         res = []
 
     print("get_faces", res)
@@ -258,7 +258,7 @@ def get_users():
         #     Limit=5,
         # )
     except Exception as ex:
-        print("Error:", ex)
+        print("Error get_users:", ex)
         res = []
 
     print("get_users", res)
@@ -280,7 +280,7 @@ def get_history(user_id):
             Limit=20,
         )
     except Exception as ex:
-        print("Error:", ex, user_id)
+        print("Error get_history:", ex, user_id)
         res = []
 
     print("get_history", res)
@@ -319,7 +319,7 @@ def create_faces(
             }
         )
     except Exception as ex:
-        print("Error:", ex, user_id)
+        print("Error create_faces:", ex, user_id)
         res = []
 
     print("create_faces", res)
@@ -360,7 +360,7 @@ def put_faces(
             ReturnValues="UPDATED_NEW",
         )
     except Exception as ex:
-        print("Error:", ex, user_id)
+        print("Error put_faces:", ex, user_id)
         res = []
 
     print("put_faces", res)
@@ -392,7 +392,7 @@ def put_faces_image(user_id, image_key, image_url, image_type="detected"):
             ReturnValues="UPDATED_NEW",
         )
     except Exception as ex:
-        print("Error:", ex, user_id)
+        print("Error put_faces_image:", ex, user_id)
         res = []
 
     print("put_faces_image", res)
@@ -422,7 +422,7 @@ def create_history(user_id, image_key, image_url):
             }
         )
     except Exception as ex:
-        print("Error:", ex, user_id)
+        print("Error create_history:", ex, user_id)
         res = []
 
     print("create_history", res)
