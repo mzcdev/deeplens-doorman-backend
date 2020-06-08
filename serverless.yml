@@ -69,13 +69,13 @@ functions:
     events:
       - http:
           path: train
-          method: post
+          method: POST
   users:
     handler: handler.users
     events:
       - http:
           path: users
-          method: get
+          method: GET
   clean:
     handler: handler.clean
     events:
@@ -106,23 +106,9 @@ resources:
         KeySchema:
           - AttributeName: user_id
             KeyType: HASH
-          # - AttributeName: latest
-          #   KeyType: RANGE
         ProvisionedThroughput:
           ReadCapacityUnits: 2
           WriteCapacityUnits: 2
-        # LocalSecondaryIndexes:
-        #   - IndexName: users_index
-        #     KeySchema:
-        #       - AttributeName: user_id
-        #         KeyType: HASH
-        #       - AttributeName: latest
-        #         KeyType: RANGE
-        #     Projection:
-        #       NonKeyAttributes:
-        #         - user_id
-        #         - latest
-        #       ProjectionType: INCLUDE
         GlobalSecondaryIndexes:
           - IndexName: latest_index
             KeySchema:
@@ -131,9 +117,6 @@ resources:
               - AttributeName: latest
                 KeyType: RANGE
             Projection:
-              # NonKeyAttributes:
-              #   - user_id
-              #   - latest
               ProjectionType: ALL
             ProvisionedThroughput:
               ReadCapacityUnits: 2
@@ -155,18 +138,6 @@ resources:
         ProvisionedThroughput:
           ReadCapacityUnits: 2
           WriteCapacityUnits: 2
-        # LocalSecondaryIndexes:
-        #   - IndexName: history_index
-        #     KeySchema:
-        #       - AttributeName: user_id
-        #         KeyType: HASH
-        #       - AttributeName: visited
-        #         KeyType: RANGE
-        #     Projection:
-        #       NonKeyAttributes:
-        #         - user_id
-        #         - visited
-        #       ProjectionType: INCLUDE
         GlobalSecondaryIndexes:
           - IndexName: visited_index
             KeySchema:
@@ -175,9 +146,6 @@ resources:
               - AttributeName: visited
                 KeyType: RANGE
             Projection:
-              # NonKeyAttributes:
-              #   - user_id
-              #   - visited
               ProjectionType: ALL
             ProvisionedThroughput:
               ReadCapacityUnits: 2
