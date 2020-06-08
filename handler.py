@@ -699,7 +699,10 @@ def users(event, context):
 
     result = {
         "statusCode": 200,
-        "headers": {"Content-Type": "application/json"},
+        "headers": {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+        },
         "body": json.dumps({"statusCode": 200, "users": users, "history": history}),
     }
 
