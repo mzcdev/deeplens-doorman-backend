@@ -75,15 +75,15 @@ functions:
 
 resources:
   Resources:
-    S3Bucket:
-      Type: AWS::S3::Bucket
-      Properties:
-        BucketName: ${env:STORAGE_NAME}
-        # LifecycleConfiguration:
-        #   Rules:
-        #     - ExpirationInDays: 90
-        #       Prefix: "/"
-        #       Status: Enabled
+    # S3Bucket:
+    #   Type: AWS::S3::Bucket
+    #   Properties:
+    #     BucketName: ${env:STORAGE_NAME}
+    #     # LifecycleConfiguration:
+    #     #   Rules:
+    #     #     - ExpirationInDays: 90
+    #     #       Prefix: "/"
+    #     #       Status: Enabled
     usersTable:
       Type: AWS::DynamoDB::Table
       Properties:
