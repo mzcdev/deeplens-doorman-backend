@@ -253,7 +253,7 @@ def get_users():
         # )
 
         res = tbl.query(
-            KeyConditionExpression=Key("latest").gte(latest),
+            # KeyConditionExpression=Key("latest").gte(latest),
             IndexName="users_index",
             ScanIndexForward=False,  # true = asc, false = desc
             Limit=5,
@@ -275,7 +275,8 @@ def get_history(user_id):
         visited = int(round(time.time() * 1000)) - (30 * 60 * 60 * 1000)
 
         res = tbl.query(
-            KeyConditionExpression=Key("user_id").eq(user_id),
+            KeyConditionExpression=Key("user_id").eq(user_id)
+            & Key("visited").gte(visited),
             IndexName="history_index",
             ScanIndexForward=False,  # true = asc, false = desc
             Limit=20,
