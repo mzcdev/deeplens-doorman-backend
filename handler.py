@@ -699,10 +699,10 @@ def users(event, context):
 
     return {
         "statusCode": 200,
-        "users": users,
-        "history": history,
-        # "users": json.dumps(users),
-        # "history": json.dumps(history),
+        # "users": users,
+        # "history": history,
+        "users": json.dumps(users),
+        "history": json.dumps(history),
     }
 
 
