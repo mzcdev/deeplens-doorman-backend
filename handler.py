@@ -697,17 +697,19 @@ def users(event, context):
 
         history = get_history(users[0]["user_id"])
 
-    result = {
-        "statusCode": 200,
-        # "users": users,
-        # "history": history,
-        # "users": json.dumps(users),
-        # "history": json.dumps(history),
-    }
+    result = json.dumps(
+        {
+            "statusCode": 200,
+            "users": users,
+            "history": history,
+            # "users": json.dumps(users),
+            # "history": json.dumps(history),
+        }
+    )
 
     print("result", result)
 
-    return json.dumps(result)
+    return result
 
 
 def clean(event, context):
