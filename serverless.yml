@@ -104,13 +104,25 @@ resources:
         KeySchema:
           - AttributeName: user_id
             KeyType: HASH
-          - AttributeName: latest
-            KeyType: RANGE
+          # - AttributeName: latest
+          #   KeyType: RANGE
         ProvisionedThroughput:
-          ReadCapacityUnits: 1
-          WriteCapacityUnits: 1
-        LocalSecondaryIndexes:
-          - IndexName: latest_index
+          ReadCapacityUnits: 5
+          WriteCapacityUnits: 5
+        # LocalSecondaryIndexes:
+        #   - IndexName: users_index
+        #     KeySchema:
+        #       - AttributeName: user_id
+        #         KeyType: HASH
+        #       - AttributeName: latest
+        #         KeyType: RANGE
+        #     Projection:
+        #       NonKeyAttributes:
+        #         - user_id
+        #         - latest
+        #       ProjectionType: INCLUDE
+        GlobalSecondaryIndexes:
+          - IndexName: users_index
             KeySchema:
               - AttributeName: user_id
                 KeyType: HASH
@@ -121,20 +133,9 @@ resources:
                 - user_id
                 - latest
               ProjectionType: INCLUDE
-        # GlobalSecondaryIndexes:
-        #   - IndexName: users_index
-        #     KeySchema:
-        #       - AttributeName: user_id
-        #         KeyType: HASH
-        #       - AttributeName: latest
-        #         KeyType: RANGE
-        #     Projection:
-        #       NonKeyAttributes:
-        #         - user_id
-        #       ProjectionType: INCLUDE
-        #     ProvisionedThroughput:
-        #       ReadCapacityUnits: 1
-        #       WriteCapacityUnits: 1
+            ProvisionedThroughput:
+              ReadCapacityUnits: 5
+              WriteCapacityUnits: 5
     historyTable:
       Type: AWS::DynamoDB::Table
       Properties:
@@ -150,10 +151,10 @@ resources:
           - AttributeName: visited
             KeyType: RANGE
         ProvisionedThroughput:
-          ReadCapacityUnits: 1
-          WriteCapacityUnits: 1
+          ReadCapacityUnits: 5
+          WriteCapacityUnits: 5
         # LocalSecondaryIndexes:
-        #   - IndexName: myLSI
+        #   - IndexName: history_index
         #     KeySchema:
         #       - AttributeName: user_id
         #         KeyType: HASH
@@ -161,7 +162,8 @@ resources:
         #         KeyType: RANGE
         #     Projection:
         #       NonKeyAttributes:
-        #         - Artist
+        #         - user_id
+        #         - visited
         #       ProjectionType: INCLUDE
         # GlobalSecondaryIndexes:
         #   - IndexName: history_index
@@ -173,8 +175,8 @@ resources:
         #     Projection:
         #       ProjectionType: KEYS_ONLY
         #     ProvisionedThroughput:
-        #       ReadCapacityUnits: 1
-        #       WriteCapacityUnits: 1
+        #       ReadCapacityUnits: 5
+        #       WriteCapacityUnits: 5
 
 plugins:
   - serverless-python-requirements
