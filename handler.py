@@ -572,8 +572,8 @@ def unknown(event, context):
 
     create_history(user_id, key, image_url)
 
-    text = "I don't know who this is, can you tell me?"
-    # send_message(text, key)
+    # text = "I don't know who this is, can you tell me?"
+    text = "새로운 사람이 감지 되었습니다."
 
     auth = "Bearer {}".format(SLACK_API_TOKEN)
 
