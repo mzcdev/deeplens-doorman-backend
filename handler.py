@@ -246,7 +246,8 @@ def get_users():
     tbl = ddb.Table(TABLE_USERS)
 
     try:
-        latest = int(round(time.time() * 1000)) - (30 * 60 * 60 * 1000)
+        # 30 min
+        latest = int(round(time.time() * 1000)) - (30 * 60 * 1000)
 
         # res = tbl.scan(
         #     # IndexName="users_index", Limit=5
@@ -257,7 +258,7 @@ def get_users():
             & Key("latest").gte(latest),
             IndexName="latest_index",
             ScanIndexForward=False,  # true = asc, false = desc
-            Limit=1,
+            Limit=5,
         )
     except Exception as ex:
         print("Error get_users:", ex)
@@ -273,14 +274,15 @@ def get_history(user_id):
     tbl = ddb.Table(TABLE_HISTORY)
 
     try:
-        visited = int(round(time.time() * 1000)) - (30 * 60 * 60 * 1000)
+        # 30 days
+        visited = int(round(time.time() * 1000)) - (30 * 24 * 60 * 60 * 1000)
 
         res = tbl.query(
             KeyConditionExpression=Key("user_id").eq(user_id)
             & Key("visited").gte(visited),
             IndexName="visited_index",
             ScanIndexForward=False,  # true = asc, false = desc
-            Limit=20,
+            Limit=30,
         )
     except Exception as ex:
         print("Error get_history:", ex, user_id)
