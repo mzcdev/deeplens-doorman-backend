@@ -294,17 +294,12 @@ def get_history(user_id):
 
 
 def create_faces(
-    user_id,
-    image_key,
-    image_url,
-    image_type="unknown",
-    user_name="unknown",
-    real_name="Unknown",
+    user_id, image_key, image_url, thermal="x", temperature="-", device_id="unknown",
 ):
     # ddb = boto3.resource("dynamodb", region_name=AWS_REGION)
     tbl = ddb.Table(TABLE_USERS)
 
-    thermal, temperature, device_id = has_thermal(image_key)
+    # thermal, temperature, device_id = has_thermal(image_key)
 
     latest = int(round(time.time() * 1000))
 
@@ -312,11 +307,11 @@ def create_faces(
         res = tbl.put_item(
             Item={
                 "user_id": user_id,
-                "user_name": user_name,
-                "real_name": real_name,
+                "user_name": "unknown",
+                "real_name": "unknown",
                 "image_key": image_key,
                 "image_url": image_url,
-                "image_type": image_type,
+                "image_type": "unknown",
                 "thermal": thermal,
                 "temperature": temperature,
                 "device_id": device_id,
@@ -336,27 +331,30 @@ def put_faces(
     user_id,
     image_key,
     image_url,
-    image_type="unknown",
-    user_name="unknown",
-    real_name="Unknown",
+    # image_type="unknown",
+    # user_name="unknown",
+    # real_name="Unknown",
+    thermal="x",
+    temperature="-",
+    device_id="unknown",
 ):
     # ddb = boto3.resource("dynamodb", region_name=AWS_REGION)
     tbl = ddb.Table(TABLE_USERS)
 
-    thermal, temperature, device_id = has_thermal(image_key)
+    # thermal, temperature, device_id = has_thermal(image_key)
 
     latest = int(round(time.time() * 1000))
 
     try:
         res = tbl.update_item(
             Key={"user_id": user_id},
-            UpdateExpression="set user_name = :user_name, real_name=:real_name, image_key=:image_key, image_url=:image_url, image_type=:image_type, thermal=:thermal, temperature=:temperature, device_id=:device_id, latest=:latest",
+            UpdateExpression="set image_key=:image_key, image_url=:image_url, thermal=:thermal, temperature=:temperature, device_id=:device_id, latest=:latest",
             ExpressionAttributeValues={
-                ":user_name": user_name,
-                ":real_name": real_name,
+                # ":user_name": user_name,
+                # ":real_name": real_name,
                 ":image_key": image_key,
                 ":image_url": image_url,
-                ":image_type": image_type,
+                # ":image_type": image_type,
                 ":thermal": thermal,
                 ":temperature": temperature,
                 ":device_id": device_id,
@@ -373,22 +371,30 @@ def put_faces(
     return res
 
 
-def put_faces_image(user_id, image_key, image_url, image_type="detected"):
+def put_faces_image(
+    user_id,
+    image_key,
+    image_url,
+    # image_type="detected",
+    thermal="x",
+    temperature="-",
+    device_id="unknown",
+):
     # ddb = boto3.resource("dynamodb", region_name=AWS_REGION)
     tbl = ddb.Table(TABLE_USERS)
 
-    thermal, temperature, device_id = has_thermal(image_key)
+    # thermal, temperature, device_id = has_thermal(image_key)
 
     latest = int(round(time.time() * 1000))
 
     try:
         res = tbl.update_item(
             Key={"user_id": user_id},
-            UpdateExpression="set image_key=:image_key, image_url=:image_url, image_type=:image_type, thermal=:thermal, temperature=:temperature, device_id=:device_id, latest=:latest",
+            UpdateExpression="set image_key=:image_key, image_url=:image_url, thermal=:thermal, temperature=:temperature, device_id=:device_id, latest=:latest",
             ExpressionAttributeValues={
                 ":image_key": image_key,
                 ":image_url": image_url,
-                ":image_type": image_type,
+                # ":image_type": image_type,
                 ":thermal": thermal,
                 ":temperature": temperature,
                 ":device_id": device_id,
@@ -405,11 +411,13 @@ def put_faces_image(user_id, image_key, image_url, image_type="detected"):
     return res
 
 
-def create_history(user_id, image_key, image_url):
+def create_history(
+    user_id, image_key, image_url, thermal="x", temperature="-", device_id="unknown",
+):
     # ddb = boto3.resource("dynamodb", region_name=AWS_REGION)
     tbl = ddb.Table(TABLE_HISTORY)
 
-    thermal, temperature, device_id = has_thermal(image_key)
+    # thermal, temperature, device_id = has_thermal(image_key)
 
     latest = int(round(time.time() * 1000))
 
@@ -514,9 +522,11 @@ def guess(event, context):
             STORAGE_NAME, AWS_REGION, new_key
         )
 
-        put_faces_image(user_id, new_key, image_url)
+        thermal, temperature, device_id = has_thermal(new_key)
 
-        create_history(user_id, new_key, image_url)
+        put_faces_image(user_id, new_key, image_url, thermal, temperature, device_id)
+
+        create_history(user_id, new_key, image_url, thermal, temperature, device_id)
 
         text = "Detected {}".format(real_name)
         send_message(text, new_key)
@@ -532,6 +542,8 @@ def unknown(event, context):
 
     print("Unknown", key)
 
+    thermal, temperature, device_id = has_thermal(key)
+
     keys = key.split("/")
 
     image_url = "https://{}.s3-{}.amazonaws.com/{}".format(
@@ -541,7 +553,7 @@ def unknown(event, context):
     if len(keys) > 2:
         user_id = keys[1]
 
-        put_faces(user_id, key, image_url)
+        put_faces(user_id, key, image_url, thermal, temperature, device_id)
 
     else:
         res = index_faces(key)
@@ -570,12 +582,15 @@ def unknown(event, context):
 
         # new_key = move_unknown(key, bounding_box, user_id)
 
-        create_faces(user_id, key, image_url)
+        create_faces(user_id, key, image_url, thermal, temperature, device_id)
 
-    create_history(user_id, key, image_url)
+    create_history(user_id, key, image_url, thermal, temperature, device_id)
 
     # text = "I don't know who this is, can you tell me?"
-    text = "새로운 사람이 감지 되었습니다."
+    if thermal == "x":
+        text = "새로운 사람이 감지 되었습니다."
+    else:
+        text = "`{}` 에서 `{}` 가 감지 되었습니다.".format(device_id, thermal)
 
     auth = "Bearer {}".format(SLACK_API_TOKEN)
 
