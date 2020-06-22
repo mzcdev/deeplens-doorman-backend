@@ -448,12 +448,9 @@ def send_message(text, key, thermal=""):
         STORAGE_NAME, AWS_REGION, key
     )
 
-    attachments = []
-
-    # attachments.append({"image_url": image_url, "attachment_type": "default", "fallback": "Nope?"})
-    attachments.append(
+    attachments = [
         {"image_url": image_url, "attachment_type": "default", "fallback": "Nope?"}
-    )
+    ]
 
     if thermal != "":
         thermal_url = "https://{}.s3-{}.amazonaws.com/thermal/{}".format(
