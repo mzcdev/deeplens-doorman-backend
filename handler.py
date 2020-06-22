@@ -463,7 +463,7 @@ def send_message(text, key, thermal=""):
         "channel": SLACK_CHANNEL_ID,
         "text": text,
         "link_names": True,
-        "attachments": attachments,
+        "attachments": [{"image_url": image_url, "attachment_type": "default"}],
     }
 
     auth = "Bearer {}".format(SLACK_API_TOKEN)
