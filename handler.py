@@ -461,7 +461,7 @@ def send_message(text, key, thermal=""):
     message.attachments.append({"image_url": image_url})
 
     if thermal != "":
-        thermal_url = "https://{}.s3-{}.amazonaws.com/{}".format(
+        thermal_url = "https://{}.s3-{}.amazonaws.com/thermal/{}".format(
             STORAGE_NAME, AWS_REGION, thermal
         )
         message.attachments.append({"image_url": thermal_url})
@@ -600,14 +600,11 @@ def unknown(event, context):
     else:
         text = "`{}` 에서 `{}` 가 감지 되었습니다.".format(device_id, temperature)
 
-    thermal_url = ""
+    thermal_key = ""
     if len(keys) > 2:
         thermal_key = keys[2]
-        thermal_url = "https://{}.s3-{}.amazonaws.com/thermal/{}".format(
-            STORAGE_NAME, AWS_REGION, thermal_key
-        )
 
-    send_message(text, key, thermal_url)
+    send_message(text, key, thermal_key)
 
     # auth = "Bearer {}".format(SLACK_API_TOKEN)
 
