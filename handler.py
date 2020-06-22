@@ -590,7 +590,7 @@ def unknown(event, context):
     if thermal == "x":
         text = "새로운 사람이 감지 되었습니다."
     else:
-        text = "`{}` 에서 `{}` 가 감지 되었습니다.".format(device_id, thermal)
+        text = "`{}` 에서 `{}` 가 감지 되었습니다.".format(device_id, temperature)
 
     auth = "Bearer {}".format(SLACK_API_TOKEN)
 
