@@ -450,21 +450,23 @@ def send_message(text, key, thermal=""):
 
     auth = "Bearer {}".format(SLACK_API_TOKEN)
 
-    message = {
-        "channel": SLACK_CHANNEL_ID,
-        "text": text,
-        "link_names": True,
-        "attachments": [],
-    }
+    attachments = []
 
-    # message.attachments.append({"image_url": image_url, "fallback": "Nope?", "attachment_type": "default"})
-    message.attachments.append({"image_url": image_url})
+    # attachments.append({"image_url": image_url, "fallback": "Nope?", "attachment_type": "default"})
+    attachments.append({"image_url": image_url})
 
     if thermal != "":
         thermal_url = "https://{}.s3-{}.amazonaws.com/thermal/{}".format(
             STORAGE_NAME, AWS_REGION, thermal
         )
-        message.attachments.append({"image_url": thermal_url})
+        attachments.append({"image_url": thermal_url})
+
+    message = {
+        "channel": SLACK_CHANNEL_ID,
+        "text": text,
+        "link_names": True,
+        "attachments": attachments,
+    }
 
     # print(message)
     res = requests.post(
