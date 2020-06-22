@@ -450,14 +450,14 @@ def send_message(text, key, thermal=""):
 
     attachments = []
 
-    # attachments.append({"image_url": image_url, "fallback": "Nope?", "attachment_type": "default"})
-    attachments.append({"image_url": image_url})
+    # attachments.append({"image_url": image_url, "attachment_type": "default", "fallback": "Nope?"})
+    attachments.append({"image_url": image_url, "attachment_type": "default"})
 
     if thermal != "":
         thermal_url = "https://{}.s3-{}.amazonaws.com/thermal/{}".format(
             STORAGE_NAME, AWS_REGION, thermal
         )
-        attachments.append({"image_url": thermal_url})
+        attachments.append({"image_url": thermal_url, "attachment_type": "default"})
 
     message = {
         "channel": SLACK_CHANNEL_ID,
