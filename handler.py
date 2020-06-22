@@ -448,8 +448,6 @@ def send_message(text, key, thermal=""):
         STORAGE_NAME, AWS_REGION, key
     )
 
-    auth = "Bearer {}".format(SLACK_API_TOKEN)
-
     attachments = []
 
     # attachments.append({"image_url": image_url, "fallback": "Nope?", "attachment_type": "default"})
@@ -467,6 +465,8 @@ def send_message(text, key, thermal=""):
         "link_names": True,
         "attachments": attachments,
     }
+
+    auth = "Bearer {}".format(SLACK_API_TOKEN)
 
     # print(message)
     res = requests.post(
