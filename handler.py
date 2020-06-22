@@ -443,7 +443,7 @@ def create_history(
     return res
 
 
-def send_message(text, key):
+def send_message(text, key, thermal=""):
     image_url = "https://{}.s3-{}.amazonaws.com/{}".format(
         STORAGE_NAME, AWS_REGION, key
     )
@@ -454,10 +454,18 @@ def send_message(text, key):
         "channel": SLACK_CHANNEL_ID,
         "text": text,
         "link_names": True,
-        "attachments": [
-            {"image_url": image_url, "fallback": "Nope?", "attachment_type": "default",}
-        ],
+        "attachments": [],
     }
+
+    # message.attachments.append({"image_url": image_url, "fallback": "Nope?", "attachment_type": "default"})
+    message.attachments.append({"image_url": image_url})
+
+    if thermal != "":
+        thermal_url = "https://{}.s3-{}.amazonaws.com/{}".format(
+            STORAGE_NAME, AWS_REGION, thermal
+        )
+        message.attachments.append({"image_url": thermal_url})
+
     # print(message)
     res = requests.post(
         "https://slack.com/api/chat.postMessage",
@@ -592,51 +600,60 @@ def unknown(event, context):
     else:
         text = "`{}` 에서 `{}` 가 감지 되었습니다.".format(device_id, temperature)
 
-    auth = "Bearer {}".format(SLACK_API_TOKEN)
+    thermal_url = ""
+    if len(keys) > 2:
+        thermal_key = keys[2]
+        thermal_url = "https://{}.s3-{}.amazonaws.com/thermal/{}".format(
+            STORAGE_NAME, AWS_REGION, thermal_key
+        )
 
-    message = {
-        "channel": SLACK_CHANNEL_ID,
-        "text": text,
-        "attachments": [
-            {
-                "image_url": image_url,
-                "fallback": "Nope?",
-                "attachment_type": "default",
-                # "callback_id": user_id,
-                # "actions": [
-                #     {
-                #         "name": "username",
-                #         "text": "Select a username...",
-                #         "type": "select",
-                #         "data_source": "users",
-                #     },
-                #     {
-                #         "name": "discard",
-                #         "text": "Ignore",
-                #         "style": "danger",
-                #         "type": "button",
-                #         "value": "ignore",
-                #         # "confirm": {
-                #         #     "title": "Are you sure?",
-                #         #     "text": "Are you sure you want to ignore and delete this image?",
-                #         #     "ok_text": "Yes",
-                #         #     "dismiss_text": "No",
-                #         # },
-                #     },
-                # ],
-            },
-        ],
-    }
-    # print(message)
-    res = requests.post(
-        "https://slack.com/api/chat.postMessage",
-        headers={
-            "Content-Type": "application/json;charset=UTF-8",
-            "Authorization": auth,
-        },
-        json=message,
-    )
-    print(res.json())
+    send_message(text, key, thermal_url)
+
+    # auth = "Bearer {}".format(SLACK_API_TOKEN)
+
+    # message = {
+    #     "channel": SLACK_CHANNEL_ID,
+    #     "text": text,
+    #     "attachments": [
+    #         {
+    #             "image_url": image_url,
+    #             "fallback": "Nope?",
+    #             "attachment_type": "default",
+    #             # "callback_id": user_id,
+    #             # "actions": [
+    #             #     {
+    #             #         "name": "username",
+    #             #         "text": "Select a username...",
+    #             #         "type": "select",
+    #             #         "data_source": "users",
+    #             #     },
+    #             #     {
+    #             #         "name": "discard",
+    #             #         "text": "Ignore",
+    #             #         "style": "danger",
+    #             #         "type": "button",
+    #             #         "value": "ignore",
+    #             #         # "confirm": {
+    #             #         #     "title": "Are you sure?",
+    #             #         #     "text": "Are you sure you want to ignore and delete this image?",
+    #             #         #     "ok_text": "Yes",
+    #             #         #     "dismiss_text": "No",
+    #             #         # },
+    #             #     },
+    #             # ],
+    #         },
+    #     ],
+    # }
+    # # print(message)
+    # res = requests.post(
+    #     "https://slack.com/api/chat.postMessage",
+    #     headers={
+    #         "Content-Type": "application/json;charset=UTF-8",
+    #         "Authorization": auth,
+    #     },
+    #     json=message,
+    # )
+    # print(res.json())
 
     return {}
 
