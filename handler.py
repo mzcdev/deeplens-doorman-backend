@@ -468,7 +468,8 @@ def send_message(text, key, thermal=""):
 
     auth = "Bearer {}".format(SLACK_API_TOKEN)
 
-    # print(message)
+    print(message)
+
     res = requests.post(
         "https://slack.com/api/chat.postMessage",
         headers={
