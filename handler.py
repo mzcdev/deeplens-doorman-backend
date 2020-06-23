@@ -249,6 +249,9 @@ def get_users():
         # 30 min
         latest = int(round(time.time() * 1000)) - (30 * 60 * 1000)
 
+        # 8 hour
+        latest = int(round(time.time() * 1000)) - (8 * 60 * 60 * 1000)
+
         # res = tbl.scan(
         #     # IndexName="users_index", Limit=5
         # )
