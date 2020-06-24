@@ -3,7 +3,7 @@
 ## clone
 
 ```bash
-git clone https://github.com/nalbam/deeplens-doorman-backend
+git clone https://github.com/mzcdev/deeplens-doorman-backend
 ```
 
 ## env
